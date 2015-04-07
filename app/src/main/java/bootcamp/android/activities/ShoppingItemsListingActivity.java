@@ -1,6 +1,7 @@
 package bootcamp.android.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -11,11 +12,12 @@ import bootcamp.android.R;
 import bootcamp.android.adapters.ShoppingItemsListAdapter;
 import bootcamp.android.models.Product;
 import bootcamp.android.repositories.ProductRepository;
-
 import java.util.ArrayList;
 import static bootcamp.android.constants.Constants.*;
 
 public class ShoppingItemsListingActivity extends Activity {
+
+  private ArrayList<Product> products;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -25,11 +27,23 @@ public class ShoppingItemsListingActivity extends Activity {
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     StrictMode.setThreadPolicy(policy);
 
+    final ProgressDialog progressDialog = ProgressDialog.show(this, "", "Loading...", true, true);
     final GridView gridView = (GridView) findViewById(R.id.grid_view);
-    ProductRepository productRepository = new ProductRepository();
-    ArrayList<Product> products = productRepository.getProducts();
 
-    gridView.setAdapter(new ShoppingItemsListAdapter(this, products));
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        ProductRepository productRepository = new ProductRepository();
+        products = productRepository.getProducts();
+        runOnUiThread(new Runnable() {
+          @Override
+          public void run() {
+            gridView.setAdapter(new ShoppingItemsListAdapter(ShoppingItemsListingActivity.this, products));
+            progressDialog.dismiss();
+          }
+        });
+      }
+    }).start();
 
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
