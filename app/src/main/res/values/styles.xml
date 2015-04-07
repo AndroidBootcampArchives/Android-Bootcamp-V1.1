@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="app_theme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <item name="android:actionBarStyle">@style/my_action_bar</item>
+  </style>
+
+  <style name="my_action_bar" parent="android:Widget.Holo.Light.ActionBar">
+    <item name="android:background">#ff9900</item>
+  </style>
+</resources>

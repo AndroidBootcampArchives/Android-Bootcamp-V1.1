@@ -2,9 +2,8 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:layout_width="100dp"
+              android:layout_width="109dp"
               android:layout_height="wrap_content"
-              android:layout_margin="5dp"
               android:background="#ffffff"
               android:gravity="center">
 
@@ -20,7 +19,6 @@
             android:layout_width="fill_parent"
             android:layout_height="70dp"
             android:id="@+id/imageView"
-            android:background="@android:color/holo_blue_light"
             android:scaleType="fitCenter"/>
 </LinearLayout>
 
