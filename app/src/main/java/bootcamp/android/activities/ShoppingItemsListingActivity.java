@@ -8,6 +8,8 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import androidplugins.Callback;
 import bootcamp.android.R;
 import bootcamp.android.adapters.ShoppingItemsListAdapter;
 import bootcamp.android.models.Product;
@@ -16,8 +18,6 @@ import java.util.ArrayList;
 import static bootcamp.android.constants.Constants.*;
 
 public class ShoppingItemsListingActivity extends Activity {
-
-  private ArrayList<Product> products;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -30,20 +30,22 @@ public class ShoppingItemsListingActivity extends Activity {
     final ProgressDialog progressDialog = ProgressDialog.show(this, "", "Loading...", true, true);
     final GridView gridView = (GridView) findViewById(R.id.grid_view);
 
-    new Thread(new Runnable() {
+    ProductRepository productRepository = new ProductRepository();
+    productRepository.getProducts(productsCallback(gridView, progressDialog));
+  }
+
+  private Callback<ArrayList<Product>> productsCallback(final GridView gridView, final ProgressDialog progressDialog) {
+    return new Callback<ArrayList<Product>>() {
       @Override
-      public void run() {
-        ProductRepository productRepository = new ProductRepository();
-        products = productRepository.getProducts();
-        runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            gridView.setAdapter(new ShoppingItemsListAdapter(ShoppingItemsListingActivity.this, products));
-            progressDialog.dismiss();
-          }
-        });
+      public void execute(ArrayList<Product> products) {
+        renderProducts(gridView, products);
+        progressDialog.dismiss();
       }
-    }).start();
+    };
+  }
+
+  private void renderProducts(GridView gridView, ArrayList<Product> products) {
+    gridView.setAdapter(new ShoppingItemsListAdapter(this, products));
 
     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override

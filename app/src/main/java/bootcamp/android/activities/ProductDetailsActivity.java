@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidplugins.Callback;
+import androidplugins.imagefetcher.ImageFetcher;
 import bootcamp.android.R;
-import bootcamp.android.services.ImageDownloader;
 
-import static bootcamp.android.constants.Constants.*;
-
+import static bootcamp.android.constants.Constants.DESCRIPTION_KEY;
+import static bootcamp.android.constants.Constants.IMAGE_URL_KEY;
+import static bootcamp.android.constants.Constants.TITLE_KEY;
 
 public class ProductDetailsActivity extends Activity {
 
@@ -24,11 +26,19 @@ public class ProductDetailsActivity extends Activity {
     String imageUrl = extras.getString(IMAGE_URL_KEY);
     TextView imageTitle = (TextView) findViewById(R.id.product_title);
     imageTitle.setText(title);
-    ImageDownloader imageDownloader = new ImageDownloader();
-    Bitmap bitmap = imageDownloader.downloadImage(imageUrl);
     ImageView imageView = (ImageView) findViewById(R.id.product_image);
-    imageView.setImageBitmap(bitmap);
+    ImageFetcher imageFetcher = new ImageFetcher(bitmapCallback(imageView), this);
+    imageFetcher.execute(imageUrl);
     TextView issueDescription = (TextView) findViewById(R.id.product_description);
     issueDescription.setText(description);
+  }
+
+  private Callback<Bitmap> bitmapCallback(final ImageView imageView) {
+    return new Callback<Bitmap>() {
+      @Override
+      public void execute(Bitmap object) {
+        imageView.setImageBitmap(object);
+      }
+    };
   }
 }
