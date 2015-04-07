@@ -10,7 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ContentFetcher {
+public class ContentDownloader {
 
     public String fetchResponse(String endpoint) {
 
