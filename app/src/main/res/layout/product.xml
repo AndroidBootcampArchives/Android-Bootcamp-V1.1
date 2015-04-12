@@ -2,7 +2,7 @@
     android:id="@+id/item"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
+    android:layout_height="wrap_content"
     android:background="#ade0ff"
     android:baselineAligned="true"
     android:focusableInTouchMode="false"
@@ -14,13 +14,13 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
             android:minLines="2"
@@ -33,7 +33,6 @@
             android:id="@+id/description"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_gravity="center"
             android:layout_weight="2"
             android:gravity="center"
             android:maxLines="2"
@@ -41,5 +40,10 @@
             android:text="New Text"
             android:textColor="#454545"
             android:textSize="12dp"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/imageView"/>
     </LinearLayout>
 </LinearLayout>
